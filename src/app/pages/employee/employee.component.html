@@ -1,0 +1,28 @@
+
+    <div class="d-flex flex-column p-5">
+      <div class="position-relative d-flex justify-content-center align-items-center">
+        <div [style.background-image]="photoURL | safe" class="profile"></div>
+      <button (click)="hidden.click()" class="edit">
+        <i class="fa fa-camera"></i>
+      </button>
+      <input type="file" hidden #hidden accept="image/*" (change)="previewPhoto($event)">
+    </div>
+      <p *ngIf="!createState">Employee ID: {{employee.employee_id}}</p>
+    <mat-form-field>
+      <input matInput placeholder="Employee Name" [(ngModel)]="employee.name">
+    </mat-form-field>
+    <mat-form-field >
+      <input matInput [matDatepicker]="picker" placeholder="Date of birth (MM/DD/YYYY)" [(ngModel)]="employee.dob">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Salary" type="number" [(ngModel)]="employee.salary">
+    </mat-form-field>
+      <p class="text-black-50">Skills</p>
+    <div class="d-flex flex-row flex-wrap">
+        <mat-checkbox *ngFor="let skill of skills" class="mr-2" [checked]="employee.hasSkill(skill)" (change)="changeSkill($event, skill)">{{skill.name}}</mat-checkbox>
+    </div>
+      <button (click)="update()" class="btn btn-primary mb-2">Update</button>
+      <button (click)="delete()" class="btn btn-danger" *ngIf="!createState">Delete</button>
+    </div>

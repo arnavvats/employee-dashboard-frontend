@@ -1,0 +1,72 @@
+<div class="p-2 w-100">
+
+  <div class="d-flex flex-row justify-content-between">
+    <h3 class="mt-3 pl-3 mb-3 text-dark">Employee List</h3>
+    <a routerLink="/employee" [queryParams]="{state: 'new'}" class="d-inline float-right">
+      <i class="fa fa-3x fa-plus-square-o green mr-3"></i>
+    </a>
+  </div>
+
+  <div>
+    <mat-form-field class="w-100">
+      <input matInput placeholder="Search" [formControl]="searchTerm">
+    </mat-form-field>
+  </div>
+<table mat-table [dataSource]="pageinatedEmployeeList" class="mat-elevation-z3 w-100 mb-3" matSort>
+
+  <ng-container matColumnDef="photo_url">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let el" class="text-center pt-1 pb-1"> <img class="img-thumbnail img-fluid avatar rounded-circle" src="{{el.photo_url ? el.photo_url: 'assets/images/user.png'}}"/> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="employee_id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID. </th>
+    <td mat-cell *matCellDef="let el" class="text-center"> {{el.employee_id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let el"> {{el.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="dob">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </th>
+    <td mat-cell *matCellDef="let el"> {{el.dob | date}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="skills" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Skills </th>
+    <td mat-cell *matCellDef="let el"> {{el.getSkillsList(skills)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="salary" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Salary(Rs.) </th>
+    <td mat-cell *matCellDef="let el"> {{el.salary | number}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action" >
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let el">
+      <a routerLink="/employee" [queryParams]="{ employee_id: el.employee_id, state: 'edit'}">
+        <i class="fa fa-2x fa-wrench"></i>
+      </a>
+      <a (click)="deleteEmployee(el)">
+        <i class="fa fa-2x fa-trash text-danger ml-2"></i>
+      </a>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+  <mat-paginator [length]="filteredEmployeeList.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="pageinate($event)"
+                 [pageIndex]="pageIndex"
+  >
+  </mat-paginator>
+</div>
+
